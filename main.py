@@ -1,5 +1,6 @@
 from product import Product
 from inventory import Inventory
+from supplier import Supplier
 
 from exceptions import (
     InsufficientStockError,
@@ -9,6 +10,7 @@ from exceptions import (
 
 
 def main():
+
 
     # ==========================================
     # CREATING PRODUCTS
@@ -254,10 +256,22 @@ def main():
     # FINAL STATE
     # ==========================================
 
+
+
+
+
+
+    # Remover produto
+    supplier.remove_product(product2)
+
+    print("Produtos após remover o Mouse:")
+    for product in supplier.list_products():
+        print(product)
+
     print("\n========== FINAL INVENTORY ==========\n")
 
     print(inventory)
 
 
 if __name__ == "__main__":
-    main()
+        main()
