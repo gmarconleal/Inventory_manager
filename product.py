@@ -17,7 +17,7 @@ class Product:
                         )
         if min_stock < 0:
             raise ValueError(
-                "The price must be greater than zero"
+                "The minimum stock must be greater than zero"
             )
 
         if quantity < 0:
