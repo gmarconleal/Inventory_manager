@@ -41,6 +41,13 @@ class Inventory:
                     f'{product.quantity} remaining units'
                 )
 
+    def get_products(self):
+        return self.products
+
+
+    def set_products(self, products):
+        self.products = products
+
     def __str__(self):
         resultado = ""
         for produto in self.products.values():
