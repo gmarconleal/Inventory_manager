@@ -1,66 +1,57 @@
 import json
+from product import Product
+from supplier import Supplier
 
-
-class Book:
-    def __init__(self, title, author, year):
-        self.title = title
-        self.author = author
-        self.year = year
-
-    def __str__(self):
-        return f"{self.title} - {self.author} ({self.year})"
-
-
-def book_to_dict(book):
+def product_to_dict(product):
     return {
-        "title": book.title,
-        "author": book.author,
-        "year": book.year
+        "name": product.name,
+        "sku": product.sku,
+        "price": product.price,
+        "quantity": product.quantity,
+        "category": product.category,
+        "min_stock": product.min_stock
     }
 
-
-def dict_to_book(data):
-    return Book(
-        data["title"],
-        data["author"],
-        data["year"]
+def dict_to_product(product):
+    return Product(
+        product["name"],
+        product["sku"],
+        product["price"],
+        product["quantity"],
+        product["category"],
+        product["min_stock"]
     )
 
+def function_test():
 
-def save_book(book):
-    data = book_to_dict(book)
+    products = {
+        "TEC001": Product(
+            "Teclado",
+            "TEC001",
+            250,
+            10,
+            "Periféricos",
+            3
+        ),
 
-    with open("book.json", "w") as file:
-        json.dump(data, file, indent=4)
+        "MOU001": Product(
+            "Mouse",
+            "MOU001",
+            150,
+            20,
+            "Periféricos",
+            5
+        )
+    }
+
+    data = []
+
+    for product in products.values():
+        product = product_to_dict(product)
+        data.append(product)
+
+    print(data)
+
+function_test()
 
 
-def load_book():
-    with open("book.json", "r") as file:
-        data = json.load(file)
-
-    return dict_to_book(data)
-
-
-# =========================
-# PROGRAMA
-# =========================
-
-book = Book(
-    "1984",
-    "George Orwell",
-    1949
-)
-
-print("Objeto original:")
-print(book)
-
-save_book(book)
-
-print("\nLivro salvo!")
-
-del book
-
-book = load_book()
-
-print("\nObjeto carregado:")
-print(book)
