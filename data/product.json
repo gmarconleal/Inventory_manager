@@ -1,0 +1,8 @@
+{
+    "name": "Teclado",
+    "sku": "TEC001",
+    "price": 250,
+    "quantity": 10,
+    "category": "Perif\u00e9ricos",
+    "min_stock": 3
+}
