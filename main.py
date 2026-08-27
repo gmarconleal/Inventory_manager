@@ -2,276 +2,196 @@ from product import Product
 from inventory import Inventory
 from supplier import Supplier
 
-from exceptions import (
-    InsufficientStockError,
-    DuplicateSKUError,
-    ProductNotFoundError
+from datamanager import (
+    save_products,
+    load_products,
+    save_suppliers,
+    load_suppliers
 )
 
 
-def main():
+# ==========================================
+# INVENTORY
+# ==========================================
 
+inventory = Inventory()
 
-    # ==========================================
-    # CREATING PRODUCTS
-    # ==========================================
 
-    print("\n========== CREATING PRODUCTS ==========\n")
+# ==========================================
+# PRODUCTS
+# ==========================================
 
-    mouse = Product(
-        name="Mouse",
-        sku="M001",
-        price=100.00,
-        quantity=10,
-        category="Peripherals",
-        min_stock=3
-    )
+product1 = Product(
+    "Teclado Mecânico",
+    "TEC001",
+    250,
+    10,
+    "Periféricos",
+    3
+)
 
-    keyboard = Product(
-        name="Keyboard",
-        sku="T001",
-        price=250.00,
-        quantity=2,
-        category="Peripherals",
-        min_stock=5
-    )
+product2 = Product(
+    "Mouse Gamer",
+    "MOU001",
+    150,
+    20,
+    "Periféricos",
+    5
+)
 
-    monitor = Product(
-        name="Monitor",
-        sku="MON001",
-        price=1200.00,
-        quantity=8,
-        category="Monitors",
-        min_stock=2
-    )
+product3 = Product(
+    "Monitor 24",
+    "MON001",
+    800,
+    5,
+    "Monitores",
+    2
+)
 
-    print(mouse)
-    print()
-    print(keyboard)
-    print()
-    print(monitor)
 
-    # ==========================================
-    # TESTING PRODUCT.add_stock()
-    # ==========================================
+# ==========================================
+# ADD PRODUCTS TO INVENTORY
+# ==========================================
 
-    print("\n========== ADDING STOCK ==========\n")
+inventory.add_product(product1)
+inventory.add_product(product2)
+inventory.add_product(product3)
 
-    try:
-        mouse.add_stock(5)
+print("\n========== INVENTORY ==========\n")
+print(inventory)
 
-        print("Stock added successfully.")
-        print(f"New mouse stock: {mouse.quantity}")
 
-    except ValueError as error:
-        print(f"Error: {error}")
+# ==========================================
+# FIND PRODUCT
+# ==========================================
 
-    # ==========================================
-    # TESTING add_stock() WITH ZERO
-    # ==========================================
+print("\n========== FIND PRODUCT ==========\n")
 
-    print("\n========== TESTING add_stock(0) ==========\n")
+inventory.find_product(product1)
 
-    try:
-        mouse.add_stock(0)
 
-    except ValueError as error:
-        print(f"Error caught correctly: {error}")
+# ==========================================
+# STOCK
+# ==========================================
 
-    # ==========================================
-    # TESTING add_stock() WITH NEGATIVE VALUE
-    # ==========================================
+print("\n========== STOCK ==========\n")
 
-    print("\n========== TESTING add_stock(-5) ==========\n")
+product1.add_stock(5)
 
-    try:
-        mouse.add_stock(-5)
+print(
+    f"{product1.name}: "
+    f"{product1.quantity} units"
+)
 
-    except ValueError as error:
-        print(f"Error caught correctly: {error}")
+product2.remove_stock(3)
 
-    # ==========================================
-    # TESTING Product.remove_stock()
-    # ==========================================
+print(
+    f"{product2.name}: "
+    f"{product2.quantity} units"
+)
 
-    print("\n========== REMOVING STOCK ==========\n")
 
-    try:
-        mouse.remove_stock(3)
+# ==========================================
+# TOTAL VALUE
+# ==========================================
 
-        print("Stock removed successfully.")
-        print(f"New mouse stock: {mouse.quantity}")
+print("\n========== TOTAL VALUE ==========\n")
 
-    except ValueError as error:
-        print(f"Error: {error}")
+total = inventory.total_value()
 
-    except InsufficientStockError as error:
-        print(f"Error: {error}")
+print(f"\nTotal: R$ {total:.2f}")
 
-    # ==========================================
-    # TESTING remove_stock() WITH ZERO
-    # ==========================================
 
-    print("\n========== TESTING remove_stock(0) ==========\n")
+# ==========================================
+# LOW STOCK
+# ==========================================
 
-    try:
-        mouse.remove_stock(0)
+print("\n========== LOW STOCK ==========\n")
 
-    except ValueError as error:
-        print(f"Error caught correctly: {error}")
+inventory.low_stock_report()
 
-    # ==========================================
-    # TESTING remove_stock() WITH NEGATIVE VALUE
-    # ==========================================
 
-    print("\n========== TESTING remove_stock(-5) ==========\n")
+# ==========================================
+# SUPPLIER
+# ==========================================
 
-    try:
-        mouse.remove_stock(-5)
+print("\n========== SUPPLIER ==========\n")
 
-    except ValueError as error:
-        print(f"Error caught correctly: {error}")
+supplier = Supplier(
+    "Tech Distribuidora",
+    "12.345.678/0001-90",
+    "11999999999",
+    "contato@tech.com"
+)
 
-    # ==========================================
-    # TESTING INSUFFICIENT STOCK
-    # ==========================================
+print(supplier)
 
-    print("\n========== TESTING INSUFFICIENT STOCK ==========\n")
 
-    try:
-        mouse.remove_stock(1000)
+# ==========================================
+# SUPPLIER PRODUCTS
+# ==========================================
 
-    except InsufficientStockError as error:
-        print(f"Error caught correctly: {error}")
+supplier.add_product(product1)
+supplier.add_product(product2)
 
-    # ==========================================
-    # CREATING INVENTORY
-    # ==========================================
+print("\n========== SUPPLIER PRODUCTS ==========\n")
 
-    print("\n========== CREATING INVENTORY ==========\n")
+for product in supplier.list_products():
+    print(product)
 
-    inventory = Inventory()
 
-    # ==========================================
-    # TESTING add_product()
-    # ==========================================
+# ==========================================
+# UPDATE SUPPLIER
+# ==========================================
 
-    print("\n========== ADDING PRODUCTS TO INVENTORY ==========\n")
+print("\n========== UPDATE SUPPLIER ==========\n")
 
-    inventory.add_product(mouse)
-    inventory.add_product(keyboard)
-    inventory.add_product(monitor)
+supplier.update_contact(
+    phone="11988888888"
+)
 
-    # ==========================================
-    # TESTING DUPLICATE PRODUCT
-    # ==========================================
+print(supplier)
 
-    print("\n========== TESTING DUPLICATE PRODUCT ==========\n")
-    try:
-        duplicate_mouse = Product(
-            name="Another Mouse",
-            sku="M001",
-            price=80.00,
-            quantity=5,
-            category="Peripherals",
-            min_stock=2
-        )
 
-        inventory.add_product(duplicate_mouse)
-    except DuplicateSKUError as error:
-            print(f"Error caught correctly: {error}")
-    # ==========================================
-    # TESTING find_product()
-    # ==========================================
+# ==========================================
+# SAVE DATA
+# ==========================================
 
-    print("\n========== SEARCHING FOR EXISTING PRODUCT ==========\n")
+print("\n========== SAVE DATA ==========\n")
 
-    inventory.find_product(mouse)
+save_products(inventory.get_products())
 
-    # ==========================================
-    # TESTING find_product()
-    # WITH NONEXISTENT PRODUCT
-    # ==========================================
+save_suppliers([supplier])
 
-    print("\n========== SEARCHING FOR NONEXISTENT PRODUCT ==========\n")
-    try:
-        nonexistent_product = Product(
-            name="Headset",
-            sku="H001",
-            price=300.00,
-            quantity=4,
-            category="Audio",
-            min_stock=1
-        )
 
-        inventory.find_product(nonexistent_product)
-    except ProductNotFoundError as error:
-        print(f"Error caught correctly: {error}")
+# ==========================================
+# LOAD DATA
+# ==========================================
 
+print("\n========== LOAD DATA ==========\n")
 
-    # ==========================================
-    # TESTING total_value()
-    # ==========================================
+loaded_products = load_products()
+loaded_suppliers = load_suppliers()
 
-    print("\n========== TOTAL INVENTORY VALUE ==========\n")
 
-    total = inventory.total_value()
+# ==========================================
+# NEW INVENTORY
+# ==========================================
 
-    print(f"\nTotal inventory value: R$ {total:.2f}")
+new_inventory = Inventory()
 
-    # ==========================================
-    # TESTING low_stock_report()
-    # ==========================================
+new_inventory.set_products(loaded_products)
 
-    print("\n========== LOW STOCK REPORT ==========\n")
+print("\n========== LOADED INVENTORY ==========\n")
 
-    inventory.low_stock_report(keyboard)
+print(new_inventory)
 
-    # ==========================================
-    # TESTING __str__() OF INVENTORY
-    # ==========================================
 
-    print("\n========== FULL INVENTORY ==========\n")
+# ==========================================
+# LOADED SUPPLIERS
+# ==========================================
 
-    print(inventory)
+print("\n========== LOADED SUPPLIERS ==========\n")
 
-    # ==========================================
-    # TESTING remove_product()
-    # ==========================================
-
-    print("\n========== REMOVING PRODUCT ==========\n")
-
-    inventory.remove_product(mouse)
-
-    # ==========================================
-    # TRYING TO REMOVE AN ALREADY REMOVED PRODUCT
-    # ==========================================
-
-    print("\n========== REMOVING NONEXISTENT PRODUCT ==========\n")
-    try:
-        inventory.remove_product(mouse)
-    except ProductNotFoundError as error:
-        print(f"Error caught correctly: {error}")
-    # ==========================================
-    # FINAL STATE
-    # ==========================================
-
-
-
-
-
-
-    # Remover produto
-    supplier.remove_product(product2)
-
-    print("Produtos após remover o Mouse:")
-    for product in supplier.list_products():
-        print(product)
-
-    print("\n========== FINAL INVENTORY ==========\n")
-
-    print(inventory)
-
-
-if __name__ == "__main__":
-        main()
+for supplier in loaded_suppliers:
+    print(supplier)
