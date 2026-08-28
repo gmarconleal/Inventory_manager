@@ -1,26 +1,28 @@
 class Supplier:
+
     def __init__(self, name, cnpj, phone, email):
         self.name = name
         self.cnpj = cnpj
         self.phone = phone
         self.email = email
         self.products = []
-    
+
     def add_product(self, product):
         if product not in self.products:
             self.products.append(product)
 
     def remove_product(self, product):
         if product not in self.products:
-            print('Your product doenst exist')
+            print("Your product doesn't exist")
         else:
             self.products.remove(product)
-            print(f'{product} removed!')
-        
+            print(f"{product} removed!")
+
     def list_products(self):
         return self.products
 
     def update_contact(self, phone=None, email=None):
+
         if phone is not None:
             self.phone = phone
 

@@ -1,0 +1,18 @@
+[
+    {
+        "name": "teclado",
+        "sku": "1",
+        "price": 100.0,
+        "quantity": 15,
+        "category": "tech",
+        "min_stock": 2
+    },
+    {
+        "name": "mouse",
+        "sku": "2",
+        "price": 124.0,
+        "quantity": 10,
+        "category": "tech",
+        "min_stock": 1
+    }
+]

@@ -1,7 +1,12 @@
 import json
+import os
 
 from product import Product
 from supplier import Supplier
+
+
+# Cria a pasta data caso ela não exista
+os.makedirs("data", exist_ok=True)
 
 
 # ==========================================
@@ -36,14 +41,19 @@ def save_products(products):
     for product in products.values():
         data.append(product_to_dict(product))
 
-    with open("data/products.json", "w") as file:
-        json.dump(data, file, indent=4)
+    with open("data/products.json", "w", encoding="utf-8") as file:
+        json.dump(
+            data,
+            file,
+            indent=4,
+            ensure_ascii=False
+        )
 
     print("Products saved!")
 
 
 def load_products():
-    with open("data/products.json", "r") as file:
+    with open("data/products.json", "r", encoding="utf-8") as file:
         data = json.load(file)
 
     products = {}
@@ -64,7 +74,13 @@ def supplier_to_dict(supplier):
         "name": supplier.name,
         "cnpj": supplier.cnpj,
         "phone": supplier.phone,
-        "email": supplier.email
+        "email": supplier.email,
+
+        # Salva somente o SKU dos produtos
+        "products": [
+            product.sku
+            for product in supplier.products
+        ]
     }
 
 
@@ -81,22 +97,40 @@ def save_suppliers(suppliers):
     data = []
 
     for supplier in suppliers:
-        data.append(supplier_to_dict(supplier))
+        data.append(
+            supplier_to_dict(supplier)
+        )
 
-    with open("data/suppliers.json", "w") as file:
-        json.dump(data, file, indent=4)
+    with open("data/suppliers.json", "w", encoding="utf-8") as file:
+        json.dump(
+            data,
+            file,
+            indent=4,
+            ensure_ascii=False
+        )
 
     print("Suppliers saved!")
 
 
-def load_suppliers():
-    with open("data/suppliers.json", "r") as file:
+def load_suppliers(products):
+    with open("data/suppliers.json", "r", encoding="utf-8") as file:
         data = json.load(file)
 
     suppliers = []
 
     for supplier_data in data:
+
+        # Cria o Supplier
         supplier = dict_to_supplier(supplier_data)
+
+        # Recupera os produtos pelos SKUs
+        for sku in supplier_data.get("products", []):
+
+            if sku in products:
+                supplier.add_product(
+                    products[sku]
+                )
+
         suppliers.append(supplier)
 
     return suppliers
