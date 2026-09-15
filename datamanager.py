@@ -49,7 +49,6 @@ def save_products(products):
             ensure_ascii=False
         )
 
-    print("Products saved!")
 
 
 def load_products():
@@ -109,7 +108,7 @@ def save_suppliers(suppliers):
             ensure_ascii=False
         )
 
-    print("Suppliers saved!")
+    return "Suppliers saved!"
 
 
 def load_suppliers(products):

@@ -24,7 +24,14 @@ class Product:
             raise ValueError(
                 "The quantity must be greater or equal than zero"
             )
-            
+
+        if not isinstance(name, str) or name.strip() == "":
+            raise ValueError("Name can't be blank")
+        if not isinstance(sku , str) or sku.strip() == "":
+                    raise ValueError("SKU can't be blank")
+        if not isinstance(category , str) or category.strip() == "":
+                            raise ValueError("Category can't be blank")
+
         self.name = name
         self.sku = sku
         self.price = price
@@ -62,3 +69,7 @@ class Product:
             f"stock: {self.quantity}\n"
             f"Category: {self.category}\n\n"
         )
+
+    def __repr__(self):
+        return self.__str__()
+        
