@@ -20,6 +20,15 @@ class DuplicateSKUError(Exception):
 
         super().__init__(message)
 
+class DuplicateSupplierError(Exception):
+    def __init__(self, cnpj):
+        self.cnpj = cnpj
+        message = (
+                    f'The CNPJ "{cnpj}" already exists.'
+                )
+
+        super().__init__(message)
+
 class ProductNotFoundError(Exception):
     def __init__(self,sku):
         self.sku = sku
@@ -27,3 +36,21 @@ class ProductNotFoundError(Exception):
                 f'Product {sku} not found!'
         )
         super().__init__(message)
+
+class SupplierNotFoundError(Exception):
+    def __init__(self,cnpj):
+        self.cnpj = cnpj
+        message = (
+                f'Supplier {cnpj} not found!'
+        )
+        super().__init__(message)
+
+class InvalidCNPJError(Exception):
+     def __init__(self,cnpj):
+            self.cnpj = cnpj
+            message = (
+                    f'The CNPJ {cnpj} must have 14 characters.'
+            )
+            super().__init__(message)
+    
+

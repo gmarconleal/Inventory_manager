@@ -75,7 +75,7 @@ def supplier_to_dict(supplier):
         "phone": supplier.phone,
         "email": supplier.email,
 
-        # Salva somente o SKU dos produtos
+
         "products": [
             product.sku
             for product in supplier.products
@@ -95,7 +95,7 @@ def dict_to_supplier(data):
 def save_suppliers(suppliers):
     data = []
 
-    for supplier in suppliers:
+    for supplier in suppliers.values():
         data.append(
             supplier_to_dict(supplier)
         )
@@ -114,22 +114,12 @@ def save_suppliers(suppliers):
 def load_suppliers(products):
     with open("data/suppliers.json", "r", encoding="utf-8") as file:
         data = json.load(file)
-
-    suppliers = []
-
-    for supplier_data in data:
-
-        # Cria o Supplier
-        supplier = dict_to_supplier(supplier_data)
-
-        # Recupera os produtos pelos SKUs
-        for sku in supplier_data.get("products", []):
-
-            if sku in products:
-                supplier.add_product(
-                    products[sku]
-                )
-
-        suppliers.append(supplier)
-
-    return suppliers
+        suppliers = {}
+    
+        for suppliers_data in data:
+            supplier = dict_to_supplier(suppliers_data)
+            suppliers[supplier.cnpj] = supplier
+            for sku in suppliers_data.get("products", []):
+                if sku in products:
+                    supplier.add_product(products[sku])
+        return suppliers

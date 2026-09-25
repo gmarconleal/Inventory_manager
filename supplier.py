@@ -8,8 +8,9 @@ class Supplier:
         self.products = []
 
     def add_product(self, product):
-        if product not in self.products:
-            self.products.append(product)
+            if product not in self.products:
+                self.products.append(product)
+                print("Product add to things")
 
     def remove_product(self, product):
         if product not in self.products:
@@ -30,9 +31,14 @@ class Supplier:
             self.email = email
 
     def __str__(self):
+        products = "\n".join(
+        f"{product.sku} - {product.name}"
+        for product in self.products
+    )
         return (
             f"Supplier: {self.name}\n"
             f"CNPJ: {self.cnpj}\n"
             f"Phone: {self.phone}\n"
-            f"Email: {self.email}"
+            f"Email: {self.email}\n"
+            f"products:\n{products}"
         )

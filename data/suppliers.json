@@ -4,9 +4,23 @@
         "cnpj": "12.345.678/0001-90",
         "phone": "11988888888",
         "email": "novoemail@tech.com",
+        "products": []
+    },
+    {
+        "name": "oi",
+        "cnpj": "oi",
+        "phone": "oi",
+        "email": "oi",
         "products": [
-            "TEC001",
-            "MOU001"
+            "30",
+            "13"
         ]
+    },
+    {
+        "name": "Tech teclados",
+        "cnpj": "12.345.678/9012-34",
+        "phone": "1111111111",
+        "email": "gabriel@gmail.com",
+        "products": []
     }
 ]
